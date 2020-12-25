@@ -14,15 +14,11 @@ def links():
     return links
 
 def star_bs():
-    tables = []
+    rows = []
     for link in links():
         soup = scrap(link)
-        table = soup.find('table', class_='table_space')
-        tables.append(table)
-
-    rows = []
-    for table in tables:
-        if table:
+        tables = soup.find_all('table', class_='table_space')
+        for table in tables:
             for tr in table.tbody.find_all('tr')[1:]:
                 row = []
                 for td in tr.find_all('td'):
