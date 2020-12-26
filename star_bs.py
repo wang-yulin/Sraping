@@ -1,5 +1,6 @@
 from scrap import scrap
 import pandas as pd
+import numpy as np
 
 def links():
     BASE_URL = 'https://www.lcsd.gov.hk/CE/Museum/Space/zh_CN/web/spm/starshine/resources/constemyth/'
@@ -26,9 +27,14 @@ def star_bs():
                 rows.append(row)
 
     column_names = ['name_en', 'num', 'name', 'name_cn', 'ra', 'other']
-    df_bs = pd.DataFrame(data=rows, columns=column_names)
+    df = pd.DataFrame(data=rows, columns=column_names)
 
-    return df_bs
+    df['top20'] = np.where(df['name_with_suffix'].str.endswith('**'), 'yes', 'no')
+    df['commonly_used'] = np.where(df['name_with_suffix'].str.endswith('*'), 'yes', 'no')
+    df['name'] = [s.split(r' *', 1)[0].strip() for s in df['name_with_suffix']]
+    df['name_cn'] = [s.replace(' ', '') for s in df['name_cn']]
+
+    df.to_csv('assets/stars.csv')
 
 if "__name__" == "__main__":
     star_bs()

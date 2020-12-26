@@ -20,6 +20,9 @@ def star_ch():
     df.bs = df.bs.apply(lambda x: x.strip('\n'))
     df1 = df.bs.str.extract(r'(?P<bs_name_bayer>.*)\((?P<bs_name_cn>.*)\)')
     df_ch = pd.merge(df, df1, on='name')
-    return df_ch
+    df_ch.to_csv('assets/cons.csv')
+
+if "__name__" == "__main__":
+    star_ch()
 
 
